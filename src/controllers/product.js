@@ -17,7 +17,7 @@ export const getAllProduct = async (req, res) => {
       return res.status(400).json({ error: "No product found" });
     }
     res.status(200).json({
-      message: "Get all product successfully",
+      message: "Lấy tất cả sản phẩm thành công",
       data: products,
     });
   } catch (error) {
@@ -32,7 +32,7 @@ export const getOneProduct = async (req, res) => {
       return res.status(404).send("Product not found");
     }
     res.status(200).json({
-      message: "Get product successfully",
+      message: "Lấy sản phẩm thành công",
       data: product,
     });
   } catch (error) {
@@ -51,7 +51,7 @@ export const createProduct = async (req, res) => {
       image: image,
     });
     res.status(200).json({
-      message: "Create product successfully",
+      message: "Thêm sản phẩm thành công",
       data: product,
     });
   } catch (error) {
@@ -61,7 +61,6 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
     const { title, price, description } = req.body;
     const updateData = { title, price, description };
     if (req.file) {
@@ -71,7 +70,7 @@ export const updateProduct = async (req, res) => {
       new: true,
     });
     res.status(200).json({
-      message: "Update product successfully",
+      message: "Sửa sản phẩm thành công",
       data: product,
     });
   } catch (error) {
@@ -86,7 +85,7 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).send("Product not found");
     }
     res.status(200).json({
-      message: "Delete product successfully",
+      message: "Xóa sản phẩm thành công !",
     });
   } catch (error) {
     return res.status(400).json({ error: error.message });

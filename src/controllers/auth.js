@@ -31,7 +31,9 @@ export const signUp = async (req, res, next) => {
         message: "Không thể đăng ký",
       });
     }
-    res.redirect("/api/auth/formlogin");
+    res.status(200).json({
+      message: "Đăng ký thành công",
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

@@ -23,7 +23,7 @@
   <body>
     <%- include('./partials/header') %>
 
-    <form id="registerForm" action="/api/auth/register" method="post">
+    <form id="registerForm" onsubmit="handleLogin(event)">
       <h1 class="text-center">Register</h1>
       <div class="mb-3">
         <label for="username">User name:</label>
@@ -68,36 +68,56 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
+      async function handleLogin(event) {
+        event.preventDefault();
 
-          const username = document.getElementById("username").value;
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-          const errors = [];
+        const errors = [];
 
-          if (username.length < 3) {
-            errors.push("Username must be at least 3 characters long.");
-          }
+        if (username.length < 3) {
+          errors.push("Username must be at least 3 characters long.");
+        }
 
-          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailPattern.test(email)) {
-            errors.push("Invalid email address.");
-          }
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          errors.push("Invalid email address.");
+        }
 
-          if (password.length < 6) {
-            errors.push("Password must be at least 6 characters long.");
-          }
+        if (password.length < 6) {
+          errors.push("Password must be at least 6 characters long.");
+        }
 
-          if (errors.length > 0) {
-            alert(errors.join("\n"));
+        if (errors.length > 0) {
+          alert(errors.join("\n"));
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            "http://localhost:8000/api/auth/register",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, email, password }),
+            }
+          );
+
+          const data = await response.json();
+          if (response.ok) {
+            alert("registration successful");
+            window.location.href = "/api/auth/formlogin";
           } else {
-            this.submit();
+            alert("registration failed: " + data.message);
           }
-        });
+        } catch (error) {
+          alert("An error occurred: " + error.message);
+        }
+      }
     </script>
   </body>
 </html>
