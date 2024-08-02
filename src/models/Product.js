@@ -19,6 +19,13 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reviews: [
+      {
+        rating: Number,
+        comment: String,
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );

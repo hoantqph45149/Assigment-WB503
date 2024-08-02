@@ -16,7 +16,10 @@ export const getAllProduct = async (req, res) => {
     if (!products) {
       return res.status(400).json({ error: "No product found" });
     }
-    res.render("productList", { products: products });
+    res.status(200).json({
+      message: "Get all product successfully",
+      data: products,
+    });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -28,7 +31,10 @@ export const getOneProduct = async (req, res) => {
     if (!product) {
       return res.status(404).send("Product not found");
     }
-    res.render("productDetail", { product: product });
+    res.status(200).json({
+      message: "Get product successfully",
+      data: product,
+    });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -44,7 +50,10 @@ export const createProduct = async (req, res) => {
       description: description,
       image: image,
     });
-    res.redirect("/api/product");
+    res.status(200).json({
+      message: "Create product successfully",
+      data: product,
+    });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -61,7 +70,10 @@ export const updateProduct = async (req, res) => {
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
-    res.redirect("/api/product");
+    res.status(200).json({
+      message: "Update product successfully",
+      data: product,
+    });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -70,16 +82,13 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-    res.redirect("/api/product");
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+    res.status(200).json({
+      message: "Delete product successfully",
+    });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
-};
-export const renderCreateProductForm = (req, res) => {
-  return res.render("createProduct");
-};
-export const renderUpdateProductForm = async (req, res) => {
-  const { id } = req.params;
-  const product = await Product.findById(id);
-  res.render("updateProduct", { product: product });
 };

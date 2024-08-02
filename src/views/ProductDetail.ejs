@@ -10,23 +10,58 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   </head>
   <body>
     <%- include('./partials/header') %>
-    <div class="container">
+    <main><div class="container">
       <div class="row">
-        <div class="col-12 d-flex mt-5">
+        <div class="col-12 d-flex mt-5 mb-5">
           <div class="col-6">
             <img src="/images/<%= product.image %>" alt="" />
           </div>
           <div class="col-6">
-            <p>Title: <%= product.title %></p>
-            <p>Price: <%= product.price %></p>
-            <p>Description: <%= product.description %></p>
-            <a href="/api/product" class="btn btn-primary w-100">Back</a>
+            <h3 class="mb-5"> <%= product.title %></h3>
+            <h5 class="mb-5">Price: <%= product.price %></h5>
+            <p class="mb-5">Description: <%= product.description %></p>
+            <a href="/api/client" class="btn btn-primary w-100">Back</a>
           </div>
         </div>
     </div>
+    <h2>Reviews</h2>
+    <form action="/api/client/<%= product._id %>/review" method="POST" class="mb-5 rounded border p-3">
+      <label for="rating" class="form-label" >Xếp hạng:</label>
+      <select id="rating" name="rating" class="form-select" required>
+          <option value="1">1 sao </option>
+          <option value="2">2 sao </option>
+          <option value="3">3 sao </option>
+          <option value="4">4 sao </option>
+          <option value="5">5 sao </option>
+      </select>
+      <br>
+      <label for="comment" class="form-label">Nội dung:</label>
+      <textarea class="form-control" id="comment" name="comment" required></textarea>
+      <br>
+      <button type="submit" class="btn btn-primary w-100">Gửi đánh giá</button>
+  </form>
+  <h2 class="mb-4">Reviews:</h2>
+  <% if (product.reviews.length === 0) { %>
+    <p>No reviews yet. Be the first to review this product!</p>
+  <% } else { %>
+    <div class="list-group mb-5">
+      <% product.reviews.forEach(review => { %>
+        <div class="list-group-item">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Rating: <%= review.rating %> <span class="text-warning"><i class="fas fa-star"></i></span> </h5>
+            <small>User: <%= review.user.username %></small> 
+          </div>
+          <p class="mb-1"> comment :  <%= review.comment %></p>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+  </main>
     <%- include('./partials/footer') %>
   </body>
 </html>

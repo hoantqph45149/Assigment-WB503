@@ -4,19 +4,21 @@ import {
   deleteProduct,
   getAllProduct,
   getOneProduct,
-  renderCreateProductForm,
-  renderUpdateProductForm,
   updateProduct,
   upload,
 } from "../controllers/product.js";
+import { checkPermission } from "../middlewares/checkPermission.js";
 
 const productRouter = Router();
 
-// productRouter.get("/create", renderCreateProductForm);
 productRouter.get("/", getAllProduct);
 productRouter.get("/:id", getOneProduct);
-productRouter.post("/", upload.single("image"), createProduct);
-// productRouter.get("/update/:id", renderUpdateProductForm);
-productRouter.post("/:id", upload.single("image"), updateProduct);
-productRouter.get("/delete/:id", deleteProduct);
+productRouter.post("/", checkPermission, upload.single("image"), createProduct);
+productRouter.post(
+  "/:id",
+  checkPermission,
+  upload.single("image"),
+  updateProduct
+);
+productRouter.get("/delete/:id", checkPermission, deleteProduct);
 export default productRouter;

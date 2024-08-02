@@ -18,12 +18,13 @@
           <a
             class="nav-link active text-white"
             aria-current="page"
-            href="/api/product"
+            href="/api/client"
             >Home</a
           >
         </li>
         <li class="nav-item">
           <a
+            id="registerLink"
             class="nav-link active text-white"
             aria-current="page"
             href="/api/auth/formregister"
@@ -32,22 +33,71 @@
         </li>
         <li class="nav-item">
           <a
+            id="loginLink"
             class="nav-link active text-white"
             aria-current="page"
             href="/api/auth/formlogin"
             >Login</a
           >
         </li>
+        <li class="nav-item">
+          <a
+            id="userLink"
+            class="nav-link active text-white"
+            aria-current="page"
+            href="#"
+          ></a>
+        </li>
+        <li class="nav-item">
+          <a
+            id="logoutLink"
+            class="nav-link active text-white"
+            aria-current="page"
+            href="#"
+            >Logout</a
+          >
+        </li>
       </ul>
-      <form class="d-flex" role="search">
+      <form class="d-flex" role="search" action="/api/client/search">
         <input
+          id="q"
+          name="q"
           class="form-control me-2"
           type="search"
-          placeholder="Search"
           aria-label="Search"
+          placeholder="Tìm kiếm ..."
         />
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
+
+<script>
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.user) {
+    document.getElementById("registerLink").style.display = "none";
+    document.getElementById("loginLink").style.display = "none";
+
+    document.getElementById(
+      "userLink"
+    ).innerText = `Hello ${user.user.username}`;
+
+    document.getElementById("logoutLink").style.display = "block";
+  } else {
+    document.getElementById("registerLink").style.display = "block";
+    document.getElementById("loginLink").style.display = "block";
+
+    document.getElementById("logoutLink").style.display = "none";
+  }
+
+  document
+    .getElementById("logoutLink")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      window.location.href = "/api/auth/formlogin";
+    });
+</script>

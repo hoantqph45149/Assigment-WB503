@@ -85,9 +85,9 @@
 
           if (response.ok) {
             // Lưu token vào localStorage
-            localStorage.setItem("authToken", data.accessToken);
+            localStorage.setItem("user", JSON.stringify(data.data));
             alert("Login successful");
-            window.location.href = "/api/product";
+            window.location.href = "/api/client";
           } else {
             alert("Login failed: " + data.message);
           }

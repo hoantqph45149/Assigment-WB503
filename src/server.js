@@ -1,10 +1,11 @@
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import router from "./routes/index.js";
-import bodyParser from "body-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+import router from "./routes/index.js";
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ const __dirname = path.dirname(__filename);
 // Load environment variables
 const PORT = process.env.PORT || 3000;
 const URL_DB = process.env.URL_DB;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // Connect to MongoDB
 mongoose
@@ -32,6 +34,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "upload")));

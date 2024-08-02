@@ -1,8 +1,10 @@
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import User from "../models/user.js";
+
+import User from "../models/User.js";
 import { generrateToken } from "../utils/jwtToken.js";
 import { hasshPassword } from "../utils/password.js";
+
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -26,7 +28,7 @@ export const signUp = async (req, res, next) => {
     });
     if (!newUser) {
       return res.status(400).json({
-        message: "Đăng ký không thể đăng ký",
+        message: "Không thể đăng ký",
       });
     }
     res.redirect("/api/auth/formlogin");
@@ -52,11 +54,19 @@ export const signIn = async (req, res, next) => {
     const accessToken = generrateToken({ _id: user._id });
     if (!accessToken) {
       return res.status(400).json({
-        message: "Không thể tạo token",
+        message: "Không thể tạo token",
       });
     }
 
     user.password = undefined;
+
+    // Lưu token vào cookie
+    res.cookie("token", accessToken, {
+      httpOnly: true, // Bảo vệ chống lại XSS
+      secure: process.env.NODE_ENV === "production", // Chỉ dùng secure cookie trong môi trường production
+      maxAge: 60 * 60 * 1000, // Thời hạn token là 1 giờ
+    });
+
     return res.status(200).json({
       message: "Đăng nhập thành công",
       data: {
@@ -69,10 +79,14 @@ export const signIn = async (req, res, next) => {
   }
 };
 
-export const formLogin = (req, res) => {
-  return res.render("login");
+export const logout = async (req, res, next) => {
+  res.clearCookie("token");
+  res.redirect("/api/auth/formlogin");
 };
 
-export const formRegister = (req, res) => {
-  return res.render("register");
+export const formLogin = async (req, res, next) => {
+  res.render("login");
+};
+export const formRegister = async (req, res, next) => {
+  res.render("register");
 };
