@@ -3,8 +3,8 @@ export const signUpValidation = joi.object({
   username: joi.string().required().min(6).messages({
     "string.empty": "Vui lòng điền đầy đủ tên đăng nhập",
     "any.required": "Tên đăng nhập là trường bắt buộc",
-    "string.min": " Tên đăng nhập phải tối thiểu (#litmit) ký tự ",
-    "string.max": " Tên đăng nhập phải tối đa (#litmit) ký tự ",
+    "string.min": " Tên đăng nhập phải tối thiểu 6 ký tự ",
+    "string.max": " Tên đăng nhập phải tối đa 255 ký tự ",
   }),
   email: joi.string().required().email().messages({
     "string.empty": "Vui lòng điền đầy đủ email ",

@@ -1,10 +1,5 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import User from "../models/User.js";
 import { verifyToken } from "../utils/jwtToken.js";
-dotenv.config();
-
-const { SECRET_KEY } = process.env;
 
 export const requireAuth = async (req, res, next) => {
   try {

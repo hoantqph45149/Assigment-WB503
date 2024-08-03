@@ -97,7 +97,6 @@
     .addEventListener("click", function (event) {
       event.preventDefault();
       localStorage.removeItem("user");
-      localStorage.removeItem("accessToken");
       window.location.href = "/api/auth/formlogin";
     });
 </script>

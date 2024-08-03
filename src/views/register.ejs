@@ -108,6 +108,7 @@
           );
 
           const data = await response.json();
+          // console.log(data);
           if (response.ok) {
             alert("registration successful");
             window.location.href = "/api/auth/formlogin";
